@@ -1,4 +1,6 @@
 #include"Scene.h"
+#include"Model.h"
+#include"ModelComponent.h"
 #include <fstream>
 #include <sstream>
 
@@ -89,13 +91,20 @@ void Scene::Render(IEngineCore *renderer)
 {
 	for (GameObject go : v_playerCubes)
 	{
-		renderer->drawCube(go.getComponent<TransformComponent>()->getModelMatrix());
+
+		Model* m = go.getComponent<ModelComponent>()->getModel();
+
+		glm::mat4 modelMatrix = go.getComponent<TransformComponent>()->getModelMatrix();
+
+		renderer->drawModel(m, modelMatrix);
 	}
 
 }
 
 bool Scene::loadLevelJSON(std::string levelJSONFile) 
 {
+	Model* mytestModel = new Model("assets/models/cube.obj");
+	
 	std::fstream jsonData;
 	Json::Value root;
 	Json::Reader reader;
@@ -128,6 +137,7 @@ bool Scene::loadLevelJSON(std::string levelJSONFile)
 		//const Json::Value orientNode = gameObjects[i]["orientation"];
 	
 		v_playerCubes[i].addComponent(new TransformComponent(pos));
+		v_playerCubes[i].addComponent(new ModelComponent(mytestModel));
 
 	}
 }

@@ -5,6 +5,7 @@
 
 class Camera;
 class Game;
+class Model;
 
 class IEngineCore
 {
@@ -19,4 +20,5 @@ public:
 	virtual void renderColouredBackground(float r, float g, float b) = 0;
 	virtual	void setCamera(const Camera* cam) = 0;
 	virtual void drawCube(const glm::mat4& modelMatrix) = 0;
+	virtual void drawModel(Model* model, glm::mat4& modelMatrix) = 0;
 };

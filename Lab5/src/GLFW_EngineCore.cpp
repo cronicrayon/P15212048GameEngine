@@ -274,3 +274,12 @@ void GLFW_EngineCore::drawCube(const glm::mat4& modelMatrix)
 	// this will obviously have to change later
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 }
+
+
+void GLFW_EngineCore::drawModel(Model* model, glm::mat4& modelmatrix)
+{
+	//set the model component of our shader to the object model
+	glUniformMatrix4fv(glGetUniformLocation(m_defaultShaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelmatrix));
+
+	model->render(m_defaultShaderProgram);
+}
