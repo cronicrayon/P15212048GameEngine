@@ -1,5 +1,6 @@
 #include "GLFW_EngineCore.h"
 #include "Game.h"
+#include "CameraComponent.h"
 #include <fstream>
 #include <sstream>
 #include <glm/detail/type_vec3.hpp>
@@ -249,7 +250,7 @@ void GLFW_EngineCore::initCubeModel()
 	
 }
 
-void GLFW_EngineCore::setCamera(const Camera* cam)
+void GLFW_EngineCore::setCamera(const CameraComponent* cam)
 {
 	// set the view and projection components of our shader to the camera values
 	glm::mat4 projection = glm::perspective(glm::radians(cam->m_fov), (float)m_screenWidth / (float)m_screenHeight, 0.1f, 100.0f);

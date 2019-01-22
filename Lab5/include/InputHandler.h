@@ -17,10 +17,9 @@ public:
 class RotateRight : public InputCommand
 {
 public:
-	void execute(GameObject& m_playerCube) override
+	void execute(GameObject& m_player) override
 	{
-		if (m_playerCube.getComponent<TransformComponent>())
-			m_playerCube.getComponent<TransformComponent>()->roll(-0.05f);
+		m_player.OnMessage("rotateRight");
 	}
 };
 

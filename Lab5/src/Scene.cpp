@@ -118,7 +118,13 @@ bool Scene::loadLevelJSON(std::string levelJSONFile)
 	}
 	const Json::Value gameObjects = root["GameObjects"];
 	//size() tells us how large the array is
+
+
+	// oops these are all gameObjects - none of them are playerCharacters...
 	v_playerCubes.resize(gameObjects.size());
+	
+	
+	
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
 		//get string
@@ -134,10 +140,51 @@ bool Scene::loadLevelJSON(std::string levelJSONFile)
 
 		glm::vec3 pos(x, y, z);
 
+
+
+		if (i == 0)
+		{
+			// this is the player
+
+			// add camera here...
+
+			PlayerCharacter* pc = new PlayerCharacter(modelMap.getComponent(gameObjects[i]["name"].asString()));
+
+			v_playerCubes.push_back(pc);
+
+			// add camera!!!!!
+			v_playerCubes[i].addComponent(new TransformComponent(pos));
+			v_playerCubes[i].addComponent(new ModelComponent(mytestModel));
+			v_playerCubes[i].addComponent(new CameraComponent());
+
+		}
+		else
+		{
+
+			GameObject go;
+			
+			v_sceneCubes.push_back(go);
+			v_sceneCubes[i].addComponent(new TransformComponent(pos));
+			v_sceneCubes[i].addComponent(new ModelComponent(mytestModel));
+
+		}
+
+
+
 		//const Json::Value orientNode = gameObjects[i]["orientation"];
 	
-		v_playerCubes[i].addComponent(new TransformComponent(pos));
-		v_playerCubes[i].addComponent(new ModelComponent(mytestModel));
+		
+
+
+
 
 	}
+
+	// get player TODO
+	
+}
+
+void Scene::getPlayer()
+{
+	return pc;
 }
