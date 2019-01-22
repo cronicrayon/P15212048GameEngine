@@ -4,9 +4,14 @@
 
 class ModelComponent : public Component
 {
-public :
+public:
 
-	ModelComponent();
+
+	ModelComponent(Model* aModel)
+	{
+		theModel = aModel;
+	}
+
 	void OnUpdate(float dt) override {}
 
 	void OnMessage(const std::string m) override
@@ -14,6 +19,13 @@ public :
 		// e.g.	if (m == "rotateLeft")
 
 	}
+
+	Model* getModel() 
+	{ 
+		return theModel;
+	};
+
+private:
 
 	Model* theModel;
 };

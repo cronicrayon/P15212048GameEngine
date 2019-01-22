@@ -26,7 +26,7 @@ private:
 	GameObject m_playerCube;
 	
 
-	Camera m_camera;
+	///Camera m_camera;
 };
 
 

@@ -1,6 +1,6 @@
-#include "Model.h"
 #include <assimp/postprocess.h>
 #include <stb_image/stb_image.h>
+#include "Model.h"
 #include <iostream>
 
 Model::Model(string filepath)

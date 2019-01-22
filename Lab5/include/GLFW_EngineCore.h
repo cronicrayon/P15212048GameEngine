@@ -17,8 +17,11 @@ public:
 	bool runEngine(Game& game) override;
 	void renderColouredBackground(float r, float g, float b) override;
 
-	void setCamera(const Camera* cam) override;
+	void setCamera(const CameraComponent* cam) override;
 	void drawCube(const glm::mat4& modelMatrix) override;
+	void drawModel(Model* model, glm::mat4& modelmatrix);
+
+	//virtual void drawModel(Model* model, glm::mat4& modelMatrix) = 0;
 
 private:
 	GLFWwindow* m_window;

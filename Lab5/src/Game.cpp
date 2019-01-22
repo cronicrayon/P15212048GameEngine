@@ -42,7 +42,14 @@ void Game::render()
 	m_engineInterfacePtr->renderColouredBackground(redValue, greenValue, blueValue);
 
 	// update the camera (probably don't need to do this each frame)
-	m_engineInterfacePtr->setCamera(&m_camera);
+
+	// find the player
+
+	// ask the scene for the player
+
+	// ask the player for his camera component
+
+	m_engineInterfacePtr->setCamera(m_currentScene->getPlayer->getComponent<CameraComponent>());
 
 	// draw the cube
 	//m_engineInterfacePtr->drawCube(m_playerCube.getComponent<TransformComponent>()->getModelMatrix());
