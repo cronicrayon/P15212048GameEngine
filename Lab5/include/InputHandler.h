@@ -9,15 +9,27 @@ class InputCommand
 {
 public:
 	virtual ~InputCommand() {}
-	virtual void execute(GameObject& playerBackground) = 0;
+	virtual void execute(PlayerCharacter& playerBackground) = 0;
+	
 };
 
+class Move : public InputCommand
+{
+public :
+	std::string message;
+	Move(std::string m): message(m){}
+	void execute(PlayerCharacter& m_playerCube) override
+	{
+		m_playerCube.OnMessage(message);
+	}
+	
+};
 
 //e.g. class RotateLeftCommand : public InputCommand
 class RotateRight : public InputCommand
 {
 public:
-	void execute(GameObject& m_player) override
+	void execute(PlayerCharacter& m_player) override
 	{
 		m_player.OnMessage("rotateRight");
 	}
@@ -26,7 +38,7 @@ public:
 class RotateLeft : public InputCommand
 {
 public:
-	void execute(GameObject& m_playerCube) override
+	void execute(PlayerCharacter& m_playerCube) override
 	{
 		if (m_playerCube.getComponent<TransformComponent>())
 			m_playerCube.getComponent<TransformComponent>()->roll(0.05f);
@@ -36,7 +48,7 @@ public:
 class ScaleXUp : public InputCommand
 {
 public:
-	void execute(GameObject& m_playerCube) override {
+	void execute(PlayerCharacter& m_playerCube) override {
 		if (m_playerCube.getComponent<TransformComponent>())
 			m_playerCube.getComponent<TransformComponent>()->scaleUp(0.1f, 0.0f, 0.0f);
 	}
@@ -45,7 +57,7 @@ public:
 class ScaleXDown : public InputCommand
 {
 public:
-	void execute(GameObject& m_playerCube) override {
+	void execute(PlayerCharacter& m_playerCube) override {
 		if (m_playerCube.getComponent<TransformComponent>())
 			m_playerCube.getComponent<TransformComponent>()->scaleUp(-0.1f, 0.0f, 0.0f);
 	}
@@ -53,18 +65,23 @@ public:
 
 struct InputHandler
 {	
-	GameObject* m_playerCube;
+	PlayerCharacter* m_playerCube;
 
 	std::map<int, InputCommand*> m_controlMapping;
 
-	InputHandler(GameObject* playerCube) : m_playerCube(playerCube)
+	InputHandler(PlayerCharacter* playerCube) : m_playerCube(playerCube)
 	{
 		// the idea will be to map the keys directly from a config file that can be loaded in
 		// and changed on the fly
-		m_controlMapping[(int)'A'] = new RotateLeft;
-		m_controlMapping[(int)'Z'] = new ScaleXDown;
-		m_controlMapping[(int)'S'] = new RotateRight;
-		m_controlMapping[(int)'X'] = new ScaleXUp;
+		m_controlMapping[(int)'F'] = new Move("SetCameraFirstPerson");
+		m_controlMapping[(int)'T'] = new Move("SetCameraThirdPerson");
+		m_controlMapping[(int)'S'] = new Move("movePlayerBackwards");
+		m_controlMapping[(int)'A'] = new Move("movePlayerLeft");
+		m_controlMapping[(int)'W'] = new Move("movePlayerForward");
+		m_controlMapping[(int)'D'] = new Move("movePlayerRight");
+		m_controlMapping[(int)'Q'] = new Move("rotateCameraLeft");
+		m_controlMapping[(int)'E'] = new Move("rotateCameraRight");
+
 	}
 
 	void handleInputs(const std::vector<bool>& keyBuffer)

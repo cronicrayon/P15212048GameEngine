@@ -21,16 +21,17 @@ public:
 
 	ModelHandler()
 	{
-		addComponent("assets\models\cube.obj", "cube");
-		addComponent("assets\models\floor\floor.obj", "floor");
-		addComponent("assets\models\foliage\Bush_A.obj", "Bush A");
-		addComponent("assets\models\foliage\Flowers_Daisys.obj", "Flower Daisys");
-		addComponent("assets\models\foliage\Flowers_Pink.obj", "Flower Pink");
-		addComponent("assets\models\foliage\Flowers_Yellow.obj", "Flower Yellow");
-		addComponent("assets\models\foliage\Grass_A.obj", "Grass A");
-		addComponent("assets\models\foliage\Peebles.obj", "Peebles");
-		addComponent("assets\models\foliage\Rock_A.obj", "Rock A");
-		addComponent("assets\models\foliage\Tree_A.obj", "Tree A");
+		addComponent("assets/models/duck/duck.dae", "duck");
+		addComponent("assets/models/cube.obj", "cube");
+		addComponent("assets/models/floor/floor.obj", "floor");
+		addComponent("assets/models/foliage/Bush_A.obj", "Bush A");
+		addComponent("assets/models/foliage/Flowers_Daisys.obj", "Flower Daisys");
+		addComponent("assets/models/foliage/Flowers_Pink.obj", "Flower Pink");
+		addComponent("assets/models/foliage/Flowers_Yellow.obj", "Flower Yellow");
+		addComponent("assets/models/foliage/Grass_A.obj", "Grass A");
+		addComponent("assets/models/foliage/Peebles.obj", "Peebles");
+		addComponent("assets/models/foliage/Rock_A.obj", "Rock A");
+		addComponent("assets/models/foliage/Tree_A.obj", "Tree A");
 	}
 
 

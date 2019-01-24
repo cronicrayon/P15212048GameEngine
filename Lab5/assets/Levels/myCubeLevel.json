@@ -1,9 +1,9 @@
 {
   "GameObjects": [
-      {"name": "pCube1", "position": [0.0,0.0,-5.0]},
-	  {"name": "pCube2", "position": [6.1145600688,0.0,-6.68060020762]},
-	  {"name": "pCube3", "position": [0.0,0.0,-7.0]},
-	  {"name": "pCube4", "position": [7.06106127617,0.0,8.34677150058]},
-	  {"name": "pCube5", "position": [-8.69778529013,0.0,-7.39942472579]}
+      {"name": "pCube1", "modelName": "cube", "position": [0.0,0.0,-5.0]},
+	  {"name": "pCube2", "modelName": "cube", "position": [6.1145600688,0.0,-6.68060020762]},
+	  {"name": "pCube3", "modelName": "cube", "position": [0.0,0.0,-7.0]},
+	  {"name": "pCube4", "modelName": "cube", "position": [7.06106127617,0.0,8.34677150058]},
+	  {"name": "pCube5", "modelName": "cube", "position": [-8.69778529013,0.0,-7.39942472579]}
   ]
 }

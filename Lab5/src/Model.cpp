@@ -103,10 +103,22 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 
 void Model::render(const unsigned shaderProgram)
 {
-	for (auto mesh : v_meshes)
-	{
-		mesh.render(shaderProgram);
-	}
+	
+		for (auto mesh : v_meshes)
+		{
+			mesh.render(shaderProgram);
+		}
+	
+}
+
+void Model::setFirstPerson(bool firstperson)
+{
+	firstPerson = firstperson;
+}
+
+bool Model::getFirstPerson()
+{
+	return firstPerson;
 }
 
 vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)

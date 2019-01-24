@@ -5,11 +5,13 @@
 #include "Camera.h"
 #include "Scene.h"
 
+
 class Game
 {
 public:
 	Game();
 	IEngineCore* m_engineInterfacePtr;
+
 
 	InputHandler* m_inputHandler;
 	

@@ -17,12 +17,15 @@ public:
 	void Render(IEngineCore *renderer);
 	bool loadLevelJSON(std::string levelJSONFile);
 
-	PlayerCharacter* getPlayer(); // todo
+
+	PlayerCharacter* getPlayer(int tmp_numerator); // todo
+	StaticEnvironmentObject* getStaticObject(int tmp_numerator);
 	ModelHandler modelMap;
 
 
 private:
-	std::vector<GameObject> v_sceneCubes;
-	std::vector<PlayerCharacter> v_playerCubes;
+	//std::vector<GameObject> v_sceneCubes;
+	std::vector<PlayerCharacter*> v_playerCubes;
+	std::vector<StaticEnvironmentObject*>v_sceneCubes;
 	//Model* theModel;
 };

@@ -5,6 +5,7 @@
 #include "ModelComponent.h"
 #include "CameraComponent.h"
 #include "TransformComponent.h"
+#include <iostream>
 
 class GameObject : public Component
 {
@@ -44,15 +45,15 @@ private:
 	std::unordered_map<std::type_index, Component*> m_components;
 };
 
-class StaticEnvirinmentObject : public GameObject
+class StaticEnvironmentObject : public GameObject
 {
 public:
-	StaticEnvirinmentObject(Model* model)
+	StaticEnvironmentObject(Model* model)
 	{
 		addComponent(new TransformComponent);
 		addComponent(new ModelComponent(model));
 	}
-	~StaticEnvirinmentObject()
+	~StaticEnvironmentObject()
 	{
 
 	}
@@ -78,6 +79,30 @@ public:
 		addComponent(new TransformComponent);
 		addComponent(new CameraComponent);
 		addComponent(new ModelComponent(model));
+
+		TransformComponent* transform = getComponent<TransformComponent>();
+
+		glm::vec3 pos = transform->m_position;
+
+		glm::quat orient = transform->m_orientation;
+
+		// access the camera component too and link it to our position
+
+		CameraComponent* camera = getComponent<CameraComponent>();
+
+		//m_cameraState = CameraViewState::FPCamera;awdaewsd
+
+		glm::vec3 relativePosition = glm::vec3(0, 0.4, 1);
+
+
+
+		pos += orient * relativePosition;
+
+		camera->setPosition(pos);
+		camera->setOrientation(orient);
+
+
+		// set camera from model
 	}
 	~PlayerCharacter()
 	{
@@ -92,22 +117,22 @@ public:
 		{
 		case CameraViewState::FPCamera:
 		{
-			TransformComponent* transform = getComponent<TransformComponent>();
+			//TransformComponent* transform = getComponent<TransformComponent>();
 
-			getComponent<CameraComponent>()->m_position = -1.0f * transform->m_position;
-			getComponent<CameraComponent>()->m_orientation = inverse(transform->m_orientation);
+			//getComponent<CameraComponent>()->m_position = -1.0f * transform->m_position;
+			//getComponent<CameraComponent>()->m_orientation = inverse(transform->m_orientation);
 
 			break;
 		}
 		case CameraViewState::TPCamera:
 
-			TransformComponent * transform = getComponent<TransformComponent>();
+			//TransformComponent* transform = getComponent<TransformComponent>();
 
-			glm::quat inverseOrinentation = inverse(transform->m_orientation);
+			//glm::quat inverseOrinentation = inverse(transform->m_orientation);
 
-			getComponent<CameraComponent>()->m_position = -1.0f*(transform->m_position + glm::vec3(0, 150, 500) * inverseOrinentation);
+			//getComponent<CameraComponent>()->m_position = -1.0f*(transform->m_position + glm::vec3(0, 150, 500) * inverseOrinentation);
 
-			getComponent<CameraComponent>()->m_orientation = inverseOrinentation;
+			//getComponent<CameraComponent>()->m_orientation = inverseOrinentation;
 
 			break;
 		}
@@ -116,35 +141,74 @@ public:
 	{
 		if (m == "SetCameraFirstPerson")
 		{
+			//getComponent<ModelComponent>()->getModel()->setFirstPerson(true);
 			m_cameraState = CameraViewState::FPCamera;
+			cout << "first person set" << endl;
 		}
-		else if ("SetCameraThirdPerson")
+		
+		if (m == "SetCameraThirdPerson")
 		{
+			//getComponent<ModelComponent>()->getModel()->setFirstPerson(false);
 			m_cameraState = CameraViewState::TPCamera;
+			cout << "third person set" << endl;
 		}
 		else if (m.compare(0, 12, "rotateCamera") == 0)
 		{
 			TransformComponent* transform = getComponent<TransformComponent>();
 			float rotationValue;
-			if (m == "rotateCameraLeft") rotationValue = -0.05f;
-			else rotationValue = 0.05f;
+			if (m == "rotateCameraLeft") {
+				rotationValue = -0.025f;
+				cout << "camera left" << endl;
+			}
+			else {
+				rotationValue = 0.025f;
+				cout << "camera right" << endl;
+			}
 
 			transform->yaw(rotationValue);
 		}
-		else if (m.compare(0, 10, "movePlayer") == 0)
-		{
-			glm::vec3 translationVector(0.0f, 0.0f, 0.0f);
-			if (m == "movePlayerForward") translationVector.z = -1.0f;
-			else if (m == "movePlayerBackwards") translationVector.z = 1.0f;
-			else if (m == "movePlayerLeft") translationVector.x = -1.0f;
-			else if (m == "movePlayerRight") translationVector.x = -1.0f;
-
-			TransformComponent* transform = getComponent<TransformComponent>();
-			transform->translate(translationVector * inverse(transform->m_orientation));
+		glm::vec3 translationVector(0.0f, 0.0f, 0.0f);
+		if (m == "movePlayerForward") {
+			translationVector.z = -0.25f;
+			cout << "forward fire" << endl;
 		}
-		
+		else if (m == "movePlayerBackwards") {
+			translationVector.z = 0.25f;
+			cout << "backwards fire" << endl;
+		}
+		else if (m == "movePlayerLeft") {
+			translationVector.x = -0.25f;
+			cout << "left fire" << endl;
+		}
+		else if (m == "movePlayerRight") {
+			translationVector.x = 0.25f;
+			cout << "right fire" << endl;
+		}
 
-		// access the camera component tooand link it to our position
+		TransformComponent* transform = getComponent<TransformComponent>();
+		transform->translate(translationVector * transform->m_orientation);
+		
+		// move pos to camera
+
+		glm::vec3 pos = transform->m_position;
+
+		glm::quat orient = transform->m_orientation;
+
+		// access the camera component too and link it to our position
+
+		CameraComponent* camera = getComponent<CameraComponent>();
+
+		//m_cameraState = CameraViewState::FPCamera;awdaewsd
+
+		glm::vec3 relativePosition = glm::vec3(0, 0.4, 1);
+
+
+
+		pos += orient * relativePosition;
+
+		camera->setPosition(pos);
+		camera->setOrientation(orient);
+
 
 	}
 

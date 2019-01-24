@@ -15,6 +15,10 @@ public:
 
 	void render(const unsigned int shaderProgram);
 
+	bool firstPerson;
+	void setFirstPerson(bool firstperson);
+	bool getFirstPerson();
+
 	static unsigned int TextureFromFile(const char* filepath, const string& directory, bool gamma = false);
 
 private:

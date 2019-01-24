@@ -29,7 +29,7 @@ void Scene::loadLevel(std::string levelFile)
 		ss.ignore(17);
 		ss >> numElementsToRead;
 
-		v_playerCubes.resize(numElementsToRead);
+		v_sceneCubes.resize(numElementsToRead);
 		ss.clear();
 
 		for (int i = 0; i < numElementsToRead; i++)
@@ -73,32 +73,58 @@ void Scene::loadLevel(std::string levelFile)
 
 			glm::vec3 scale = glm::vec3(x, y, z);
 
-			v_playerCubes[i].addComponent(new TransformComponent(pos, orient, scale));
+			if (i == 0)
+			{
+			
+			v_playerCubes[i]->addComponent(new TransformComponent(pos, orient, scale));
 		}
+
+		v_sceneCubes[i]->addComponent(new TransformComponent(pos, orient, scale));
+
+	}
 	}
 }
 
 
 GameObject* Scene::getGameObject(int tmp_numerator)
 {
-	if (tmp_numerator <= v_playerCubes.size() - 1)
+	if (tmp_numerator <= v_sceneCubes.size() - 1)
 	{
-		return &v_playerCubes[tmp_numerator];
+		return v_sceneCubes[tmp_numerator];
+	}
+}
+
+StaticEnvironmentObject* Scene::getStaticObject(int tmp_numerator)
+{
+	if (tmp_numerator <= v_sceneCubes.size() - 1)
+	{
+		return v_sceneCubes[tmp_numerator];
 	}
 }
 
 void Scene::Render(IEngineCore *renderer)
 {
-	for (GameObject go : v_playerCubes)
+	for (StaticEnvironmentObject* go : v_sceneCubes)
 	{
 
-		Model* m = go.getComponent<ModelComponent>()->getModel();
+		Model* m = go->getComponent<ModelComponent>()->getModel();
 
-		glm::mat4 modelMatrix = go.getComponent<TransformComponent>()->getModelMatrix();
+		glm::mat4 modelMatrix = go->getComponent<TransformComponent>()->getModelMatrix();
 
 		renderer->drawModel(m, modelMatrix);
 	}
 
+	for (PlayerCharacter* pc : v_playerCubes)
+	{
+		if ((pc->getComponent<ModelComponent>()->getModel()->getFirstPerson() == false))
+		{
+			Model* m = pc->getComponent<ModelComponent>()->getModel();
+
+			glm::mat4 modelMatrix = pc->getComponent<TransformComponent>()->getModelMatrix();
+
+			renderer->drawModel(m, modelMatrix);
+		}
+	}
 }
 
 bool Scene::loadLevelJSON(std::string levelJSONFile) 
@@ -121,7 +147,7 @@ bool Scene::loadLevelJSON(std::string levelJSONFile)
 
 
 	// oops these are all gameObjects - none of them are playerCharacters...
-	v_playerCubes.resize(gameObjects.size());
+	v_sceneCubes.resize(gameObjects.size()-1);
 	
 	
 	
@@ -146,26 +172,19 @@ bool Scene::loadLevelJSON(std::string levelJSONFile)
 		{
 			// this is the player
 
-			// add camera here...
-
-			PlayerCharacter* pc = new PlayerCharacter(modelMap.getComponent(gameObjects[i]["name"].asString()));
+			PlayerCharacter* pc = new PlayerCharacter(modelMap.getComponent(gameObjects[i]["modelName"].asString()));
 
 			v_playerCubes.push_back(pc);
-
-			// add camera!!!!!
-			v_playerCubes[i].addComponent(new TransformComponent(pos));
-			v_playerCubes[i].addComponent(new ModelComponent(mytestModel));
-			v_playerCubes[i].addComponent(new CameraComponent());
-
 		}
 		else
 		{
+			//adding environment objects
 
-			GameObject go;
+			StaticEnvironmentObject* go = new StaticEnvironmentObject(modelMap.getComponent(gameObjects[i]["modelName"].asString()));
 			
-			v_sceneCubes.push_back(go);
-			v_sceneCubes[i].addComponent(new TransformComponent(pos));
-			v_sceneCubes[i].addComponent(new ModelComponent(mytestModel));
+			v_sceneCubes[i - v_playerCubes.size()] = go;
+			//v_sceneCubes[i - 1].addComponent(new TransformComponent(pos));
+			//v_sceneCubes[i - 1].addComponent(new ModelComponent(mytestModel));
 
 		}
 
@@ -184,7 +203,11 @@ bool Scene::loadLevelJSON(std::string levelJSONFile)
 	
 }
 
-void Scene::getPlayer()
+PlayerCharacter* Scene::getPlayer(int tmp_numerator)
 {
-	return pc;
+	if (tmp_numerator <= v_playerCubes.size())
+	{
+		return v_playerCubes[tmp_numerator];
+	}
+	
 }

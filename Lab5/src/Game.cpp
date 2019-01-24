@@ -10,7 +10,7 @@ Game::Game()
 	m_currentScene->loadLevelJSON("Assets/Levels/myCubeLevel.json");
 	//loadLevel("assets/Levels/myCubeLevel.txt");
 	m_engineInterfacePtr = nullptr;
-	m_inputHandler = new InputHandler(m_currentScene->getGameObject(0));
+	m_inputHandler = new InputHandler(m_currentScene->getPlayer(0));
 
 	m_playerBackground.addComponent(new RedComponent);
 	m_playerBackground.addComponent(new GreenComponent);
@@ -49,7 +49,7 @@ void Game::render()
 
 	// ask the player for his camera component
 
-	m_engineInterfacePtr->setCamera(m_currentScene->getPlayer->getComponent<CameraComponent>());
+	m_engineInterfacePtr->setCamera(m_currentScene->getPlayer(0)->getComponent<CameraComponent>());
 
 	// draw the cube
 	//m_engineInterfacePtr->drawCube(m_playerCube.getComponent<TransformComponent>()->getModelMatrix());
@@ -57,72 +57,5 @@ void Game::render()
 	m_currentScene->Render(m_engineInterfacePtr);
 }
 
-/*void Game::loadLevel(std::string levelFile)
-{
-	std::stringstream ss;
-	std::string s;
-	
 
-	std::ifstream myInputFile;
-
-
-
-
-	myInputFile.open(levelFile, std::ios_base::in);
-
-	if (myInputFile.is_open())
-	{
-		std::getline(myInputFile, s);
-		ss.str(s);
-		ss.ignore(17);
-		ss >> numElementsToRead;
-
-		v_playerCubes.resize(numElementsToRead);
-		ss.clear();
-
-		for (int i = 0; i < numElementsToRead; i++)
-		{
-			getline(myInputFile, s);
-			getline(myInputFile, s);
-			ss.clear();
-			ss.str(s);
-
-
-			float x;
-			float y;
-			float z;
-
-			ss >> x;
-			ss >> y;
-			ss >> z;
-
-			glm::vec3 pos = glm::vec3(x, y, z);
-
-			getline(myInputFile, s);
-			ss.clear();
-			ss.str(s);
-
-			float w;
-
-			ss >> w;
-			ss >> x;
-			ss >> y;
-			ss >> z;
-
-			glm::quat orient = glm::quat(w, x, y, z);
-
-			getline(myInputFile, s);
-			ss.clear();
-			ss.str(s);
-
-			ss >> x;
-			ss >> y;
-			ss >> z;
-
-			glm::vec3 scale = glm::vec3(x, y, z);
-
-			v_playerCubes[i].addComponent(new TransformComponent(pos, orient, scale));
-		}
-	}
-}*/
 
